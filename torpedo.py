@@ -8,7 +8,9 @@ class Torpedo:
         self.y_location = y_location
         self.y_speed = y_speed
         self.heading = heading
+        self.__radius = 4
         self.life_time = life_time
+
 
     def move(self):
         new_x = Screen.SCREEN_MIN_X + \
@@ -19,3 +21,6 @@ class Torpedo:
                 (Screen.SCREEN_MAX_Y - Screen.SCREEN_MIN_Y)
         self.x_location = new_x
         self.y_location = new_y
+
+    def get_radius(self):
+        return self.__radius

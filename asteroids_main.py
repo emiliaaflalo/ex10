@@ -10,6 +10,7 @@ DEFAULT_ASTEROIDS_NUM = 5
 INIT_ASTEROID_SIZE = 3
 MIN_ASTEROID_SPEED = -4
 MAX_ASTEROID_SPEED = 4
+POINTS_BY_ASTEROIDS_SIZE = {1:100, 2:50, 3:20}
 
 
 
@@ -26,6 +27,7 @@ class GameRunner:
         self.asteroids = []
         self.add_asteroids(DEFAULT_ASTEROIDS_NUM)
         self.torpedoes = []
+        self.score = 0
 
 
     def run(self):
@@ -45,11 +47,6 @@ class GameRunner:
         self.shoot_torpedo()
         self.torpedo_life()
         self.move_all()
-        #for asteroid in self.asteroids:
-
-
-
-
 
 
     def generate_random_location(self):
@@ -97,12 +94,12 @@ class GameRunner:
             asteroid.move()
             self.__screen.draw_asteroid(asteroid, asteroid.x_location, asteroid.y_location)
             if asteroid.has_intersection(self.ship):
-                self.__screen.show_message("Message", "You lost a life!")
-                self.__screen.remove_life()
-                self.ship.life -= 1
-                self.__screen.unregister_asteroid(asteroid)
-                self.asteroids.remove(asteroid)
+                self.intersection_with_ship(asteroid)
                 break
+            for torpedo in self.torpedoes:
+                if asteroid.has_intersection(torpedo):
+                    self.intersection_with_torpedo(asteroid)
+                    break
         if self.__screen.is_left_pressed():
             self.ship.change_direction("l")
         elif self.__screen.is_right_pressed():
@@ -113,6 +110,17 @@ class GameRunner:
         for torpedo in self.torpedoes:
             torpedo.move()
             self.__screen.draw_torpedo(torpedo, torpedo.x_location, torpedo.y_location, torpedo.heading)
+
+    def intersection_with_ship(self, asteroid):
+        self.__screen.show_message("Message", "You lost a life!")
+        self.__screen.remove_life()
+        self.ship.life -= 1
+        self.__screen.unregister_asteroid(asteroid)
+        self.asteroids.remove(asteroid)
+
+    def intersection_with_torpedo(self, asteroid):
+        self.score += POINTS_BY_ASTEROIDS_SIZE[asteroid.size]
+        self.__screen.set_score(self.score)
 
     def add_torpedo(self):
         x_speed = self.ship.x_speed + 2*math.cos(math.radians(self.ship.heading))
