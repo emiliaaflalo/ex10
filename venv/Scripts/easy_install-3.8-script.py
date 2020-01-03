@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 #!C:\Users\Tal\PycharmProjects\ex10\venv\Scripts\python.exe
-=======
-#!C:\Users\User\PycharmProjects\ex10.2\venv\Scripts\python.exe
->>>>>>> origin/master
-# EASY-INSTALL-ENTRY-SCRIPT: 'setuptools==40.8.0','console_scripts','easy_install'
+# EASY-INSTALL-ENTRY-SCRIPT: 'setuptools==40.8.0','console_scripts','easy_install-3.8'
 __requires__ = 'setuptools==40.8.0'
 import re
 import sys
@@ -12,5 +8,5 @@ from pkg_resources import load_entry_point
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
     sys.exit(
-        load_entry_point('setuptools==40.8.0', 'console_scripts', 'easy_install')()
+        load_entry_point('setuptools==40.8.0', 'console_scripts', 'easy_install-3.8')()
     )
