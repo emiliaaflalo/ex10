@@ -10,7 +10,9 @@ class Ship:
         self.y_location = y_location
         self.y_speed = y_speed
         self.heading = heading
+        self.life = 3
         self.__radius = 1
+
 
     def move(self):
         """

@@ -43,6 +43,10 @@ class GameRunner:
         # TODO: Your code goes here
         self.__screen.draw_ship(self.ship.x_location, self.ship.y_location, self.ship.heading)
         self.move_all()
+        #for asteroid in self.asteroids:
+
+
+
 
 
 
@@ -90,6 +94,13 @@ class GameRunner:
         for asteroid in self.asteroids:
             asteroid.move()
             self.__screen.draw_asteroid(asteroid, asteroid.x_location, asteroid.y_location)
+            if asteroid.has_intersection(self.ship):
+                self.__screen.show_message("Message", "You lost a life!")
+                self.__screen.remove_life()
+                self.ship.life -= 1
+                self.__screen.unregister_asteroid(asteroid)
+                self.asteroids.remove(asteroid)
+                break
         if self.__screen.is_left_pressed():
             self.ship.change_direction("l")
         elif self.__screen.is_right_pressed():
