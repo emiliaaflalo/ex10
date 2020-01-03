@@ -2,13 +2,19 @@ from screen import Screen
 import sys
 import random
 from ship import Ship
+from asteroid import Asteroid
 
 DEFAULT_ASTEROIDS_NUM = 5
+INIT_ASTEROID_SIZE = 3
+MIN_ASTEROID_SPEED = -4
+MAX_ASTEROID_SPEED = 4
+
+
 
 
 class GameRunner:
 
-    def __init__(self, asteroids_amount=5):
+    def __init__(self, asteroids_amount=DEFAULT_ASTEROIDS_NUM):
         self.__screen = Screen()
 
         self.__screen_max_x = Screen.SCREEN_MAX_X
@@ -16,6 +22,9 @@ class GameRunner:
         self.__screen_min_x = Screen.SCREEN_MIN_X
         self.__screen_min_y = Screen.SCREEN_MIN_Y
         self.ship = self.add_ship()
+        self.asteroids = []
+        self.add_asteroids(DEFAULT_ASTEROIDS_NUM)
+
 
 
     def run(self):
@@ -62,10 +71,27 @@ class GameRunner:
         self.__screen.draw_ship(ship.x_location, ship.y_location, ship.heading)
         return ship
 
-    def add_astroid(self):
-        location = self.generate_random_location()
-        while location[0] == self.ship.x_location and location[1] == self.ship.y_location:
+    def add_asteroids(self, asteroid_num):
+        for i in range(asteroid_num):
             location = self.generate_random_location()
+            while location[0] == self.ship.x_location and location[1] == self.ship.y_location:
+                location = self.generate_random_location()
+            asteroid_speed = self.generate_asteroid_speed()
+            new_asteroid = Asteroid(location[0], asteroid_speed[0], location[0], asteroid_speed[1])
+            self.asteroids.append(new_asteroid)
+            self.__screen.register_asteroid(new_asteroid, INIT_ASTEROID_SIZE)
+
+    def generate_asteroid_speed(self):
+        asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+        while asteroid_speed_x == 0:
+            asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+        asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+        while asteroid_speed_y == 0:
+            asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+        return asteroid_speed_x, asteroid_speed_y
+
+
+
 
 def main(amount):
     runner = GameRunner(amount)
