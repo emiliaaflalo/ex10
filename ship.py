@@ -3,7 +3,6 @@ import math
 
 
 class Ship:
-
     def __init__(self, x_location, x_speed, y_location, y_speed, heading):
         self.x_location = x_location
         self.x_speed = x_speed
@@ -13,17 +12,16 @@ class Ship:
         self.life = 3
         self.__radius = 1
 
-
     def move(self):
         """
         this function updates the location of the ship according to the current
          location and speed
         """
-        new_x = Screen.SCREEN_MIN_X +\
-                (self.x_location + self.x_speed - Screen.SCREEN_MIN_X) %\
+        new_x = Screen.SCREEN_MIN_X + \
+                (self.x_location + self.x_speed - Screen.SCREEN_MIN_X) % \
                 (Screen.SCREEN_MAX_X - Screen.SCREEN_MIN_X)
-        new_y = Screen.SCREEN_MIN_Y +\
-                (self.y_location + self.y_speed - Screen.SCREEN_MIN_Y) %\
+        new_y = Screen.SCREEN_MIN_Y + \
+                (self.y_location + self.y_speed - Screen.SCREEN_MIN_Y) % \
                 (Screen.SCREEN_MAX_Y - Screen.SCREEN_MIN_Y)
         self.x_location = new_x
         self.y_location = new_y
@@ -50,4 +48,7 @@ class Ship:
         self.y_speed = new_y
 
     def get_radius(self):
+        """
+        :return: the radius of the ship (int)
+        """
         return self.__radius

@@ -71,6 +71,12 @@ class GameRunner:
         return ship
 
     def add_asteroids(self, asteroid_num):
+        """
+        this function adds asteroids to the game asteroid list, and registers
+        them on screen
+        :param asteroid_num: int, number of asteroids wanted added to the game
+        :return:
+        """
         for i in range(asteroid_num):
             location = self.generate_random_location()
             while location[0] == self.ship.x_location and location[1] == self.ship.y_location:
@@ -81,6 +87,10 @@ class GameRunner:
             self.__screen.register_asteroid(new_asteroid, INIT_ASTEROID_SIZE)
 
     def generate_asteroid_speed(self):
+        """
+        this function generates random x and y speed for asteroid speed use
+        :return:int, x speed and y speed
+        """
         asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
         while asteroid_speed_x == 0:
             asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
@@ -90,6 +100,11 @@ class GameRunner:
         return asteroid_speed_x, asteroid_speed_y
 
     def move_all(self):
+        """
+        this function moves all the objects in the game and updates their
+        status on screen
+        :return:
+        """
         for asteroid in self.asteroids:
             asteroid.move()
             self.__screen.draw_asteroid(asteroid, asteroid.x_location, asteroid.y_location)
@@ -112,6 +127,12 @@ class GameRunner:
             self.__screen.draw_torpedo(torpedo, torpedo.x_location, torpedo.y_location, torpedo.heading)
 
     def intersection_with_ship(self, asteroid):
+        """
+        this function checks if the ship is intersecting with an asteroid, and
+        if so, the ship loses one life point, and a message pops up.
+        :param asteroid:
+        :return:
+        """
         self.__screen.show_message("Message", "You lost a life!")
         self.__screen.remove_life()
         self.ship.life -= 1
@@ -119,10 +140,21 @@ class GameRunner:
         self.asteroids.remove(asteroid)
 
     def intersection_with_torpedo(self, asteroid):
+        """
+        this function checks if there are torpedoes intersecting with asteroids
+        and if so, adds score points.
+        :param asteroid:
+        :return:
+        """
         self.score += POINTS_BY_ASTEROIDS_SIZE[asteroid.size]
         self.__screen.set_score(self.score)
 
     def add_torpedo(self):
+        """
+        this function returns a new torpedo object, with attributes depending
+        on the ship current location, speed and heading.
+        :return: torpedo type object
+        """
         x_speed = self.ship.x_speed + 2*math.cos(math.radians(self.ship.heading))
         y_speed = self.ship.y_speed + 2*math.sin(math.radians(self.ship.heading))
         x_location = self.ship.x_location
@@ -132,12 +164,22 @@ class GameRunner:
         return new_torpedo
 
     def shoot_torpedo(self):
+        """
+        this function adds the new torpedo to the game, adding it to a torpedo
+        list, and registering it on screen.
+        :return:
+        """
         if self.__screen.is_space_pressed() and len(self.torpedoes) <= 10:
             new_torpedo = self.add_torpedo()
             self.torpedoes.append(new_torpedo)
             self.__screen.register_torpedo(new_torpedo)
 
     def torpedo_life(self):
+        """
+        this function removes a torpedo object from the game and screen if
+        it has been around for 200 rounds (200 calls for the game_loop func)
+        :return:
+        """
         for torpedo in self.torpedoes:
             torpedo.life_time += 1
             if torpedo.life_time >= 200:
