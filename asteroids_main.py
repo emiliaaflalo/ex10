@@ -22,8 +22,8 @@ class GameRunner:
         self.__screen_min_x = Screen.SCREEN_MIN_X
         self.__screen_min_y = Screen.SCREEN_MIN_Y
         self.ship = self.add_ship()
-        self.asteroids = []
-        self.add_asteroids(DEFAULT_ASTEROIDS_NUM)
+        # self.asteroids = []
+        # self.add_asteroids(DEFAULT_ASTEROIDS_NUM)
 
 
 
@@ -40,15 +40,14 @@ class GameRunner:
 
     def _game_loop(self):
         # TODO: Your code goes here
-        self.add_ship()
-        while True:
-            self.ship.move()
-            if self.__screen.is_left_pressed():
-                self.ship.change_direction("l")
-            elif self.__screen.is_right_pressed():
-                self.ship.change_direction("r")
-            elif self.__screen.is_up_pressed():
-                self.ship.accelerate()
+        self.__screen.draw_ship(self.ship.x_location, self.ship.y_location, self.ship.heading)
+        self.ship.move()
+        if self.__screen.is_left_pressed():
+            self.ship.change_direction("l")
+        elif self.__screen.is_right_pressed():
+            self.ship.change_direction("r")
+        elif self.__screen.is_up_pressed():
+            self.ship.accelerate()
 
     def generate_random_location(self):
         """
@@ -89,6 +88,9 @@ class GameRunner:
         while asteroid_speed_y == 0:
             asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
         return asteroid_speed_x, asteroid_speed_y
+
+    def move_all(self):
+
 
 
 
