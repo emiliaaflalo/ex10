@@ -3,6 +3,8 @@ import sys
 import random
 from ship import Ship
 from asteroid import Asteroid
+from torpedo import Torpedo
+import math
 
 DEFAULT_ASTEROIDS_NUM = 5
 INIT_ASTEROID_SIZE = 3
@@ -16,7 +18,6 @@ class GameRunner:
 
     def __init__(self, asteroids_amount=DEFAULT_ASTEROIDS_NUM):
         self.__screen = Screen()
-
         self.__screen_max_x = Screen.SCREEN_MAX_X
         self.__screen_max_y = Screen.SCREEN_MAX_Y
         self.__screen_min_x = Screen.SCREEN_MIN_X
@@ -24,6 +25,7 @@ class GameRunner:
         self.ship = self.add_ship()
         self.asteroids = []
         self.add_asteroids(DEFAULT_ASTEROIDS_NUM)
+        self.torpedoes = []
 
 
     def run(self):
@@ -95,6 +97,26 @@ class GameRunner:
         elif self.__screen.is_up_pressed():
             self.ship.accelerate()
         self.ship.move()
+
+    def add_torpedo(self):
+        x_speed = self.ship.x_speed + 2*math.cos(math.radians(self.ship.heading))
+        y_speed = self.ship.y_speed + 2*math.sin(math.radians(self.ship.heading))
+        x_location = self.ship.x_location
+        y_location = self.ship.y_location
+        heading = self.ship.heading
+        new_torpedo = Torpedo(x_location, x_speed, y_location, y_speed, heading)
+        return new_torpedo
+
+    def shoot_torpedo(self):
+        if Screen.is_space_pressed():
+            new_torpedo = self.add_torpedo()
+            self.torpedoes.append(new_torpedo)
+            self.__screen.register_torpedo(new_torpedo)
+
+
+
+
+
 
 
 def main(amount):
