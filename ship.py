@@ -2,9 +2,20 @@ from screen import Screen
 
 
 def move(location, x_speed, y_speed):
+    """
+
+    :param location:
+    :param x_speed:
+    :param y_speed:
+    :return:
+    """
     x, y = location
     new_x = Screen.SCREEN_MIN_X + (x + x_speed - Screen.SCREEN_MIN_X) % \
         (Screen.SCREEN_MAX_X - Screen.SCREEN_MIN_X)
+    new_y = Screen.SCREEN_MIN_Y + (y + y_speed - Screen.SCREEN_MIN_Y) % \
+        (Screen.SCREEN_MAX_Y - Screen.SCREEN_MIN_Y)
+    new_location = (new_x, new_y)
+    return new_location
 
 
 class Ship:
