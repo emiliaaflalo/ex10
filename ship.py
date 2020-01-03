@@ -1,3 +1,4 @@
+
 class Ship:
 
     def __init__(self, x_location, x_speed, y_location, y_speed, prow_tuning):
