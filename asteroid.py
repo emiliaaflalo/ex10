@@ -8,6 +8,7 @@ class Asteroid:
         self.y_location = y_location
         self.y_speed = y_speed
         self.size = size
+        self.__radius = self.size*10-5
 
     def move(self):
         """
@@ -25,4 +26,10 @@ class Asteroid:
 
     def has_intersection(self, obj):
         distance = math.sqrt((obj.x_location-self.x_location)**2+(obj.y_location-self.y_location)**2)
-        if distance <=
+        if distance <= self.get_radius()+obj.get_radius():
+            True
+        else:
+            return False
+
+    def get_radius(self):
+        return self.__radius
