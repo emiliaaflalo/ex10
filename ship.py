@@ -10,6 +10,7 @@ class Ship:
         self.y_location = y_location
         self.y_speed = y_speed
         self.heading = heading
+        self.__radius = 1
 
     def move(self):
         """
@@ -45,3 +46,6 @@ class Ship:
         new_y = self.y_speed + math.sin(math.radians(self.heading))
         self.x_speed = new_x
         self.y_speed = new_y
+
+    def get_radius(self):
+        return self.__radius
