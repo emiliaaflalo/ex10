@@ -42,6 +42,7 @@ class GameRunner:
     def _game_loop(self):
         # TODO: Your code goes here
         self.__screen.draw_ship(self.ship.x_location, self.ship.y_location, self.ship.heading)
+        self.shoot_torpedo()
         self.move_all()
         #for asteroid in self.asteroids:
 
@@ -108,6 +109,9 @@ class GameRunner:
         elif self.__screen.is_up_pressed():
             self.ship.accelerate()
         self.ship.move()
+        for torpedo in self.torpedoes:
+            torpedo.move()
+            self.__screen.draw_torpedo(torpedo, torpedo.x_location,torpedo.y_location, torpedo.heading)
 
     def add_torpedo(self):
         x_speed = self.ship.x_speed + 2*math.cos(math.radians(self.ship.heading))
@@ -119,7 +123,7 @@ class GameRunner:
         return new_torpedo
 
     def shoot_torpedo(self):
-        if Screen.is_space_pressed():
+        if self.__screen.is_space_pressed():
             new_torpedo = self.add_torpedo()
             self.torpedoes.append(new_torpedo)
             self.__screen.register_torpedo(new_torpedo)
