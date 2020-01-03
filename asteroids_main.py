@@ -34,13 +34,13 @@ class GameRunner:
 
     def generate_random_location(self):
         x_location = random.randint(self.__screen_min_x, self.__screen_max_x)
-        y_location = random.randint(self.__screen_min_y, self._screen_max_y)
+        y_location = random.randint(self.__screen_min_y, self.__screen_max_y)
         return x_location, y_location
 
     def add_ship(self):
         location = self.generate_random_location()
-        ship = Ship(location[0],0,location[1],0,0)
-        Screen.draw_ship(ship.x_location,ship.y_location,ship.heading)
+        ship = Ship(location[0], 0, location[1], 0, 0)
+        self.__screen.draw_ship(ship.x_location, ship.y_location, ship.heading)
         return
 
 def main(amount):
