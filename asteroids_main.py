@@ -32,14 +32,14 @@ class GameRunner:
     def _game_loop(self):
         # TODO: Your code goes here
         self.add_ship()
-        while True:
-            self.ship.move()
-            if self.__screen.is_left_pressed():
-                self.ship.change_direction("l")
-            elif self.__screen.is_right_pressed():
-                self.ship.change_direction("r")
-            elif self.__screen.is_up_pressed():
-                self.ship.accelerate()
+        self.__screen.draw_ship(self.ship.x_location, self.ship.y_location, self.ship.heading)
+        self.ship.move()
+        if self.__screen.is_left_pressed():
+            self.ship.change_direction("l")
+        elif self.__screen.is_right_pressed():
+            self.ship.change_direction("r")
+        elif self.__screen.is_up_pressed():
+            self.ship.accelerate()
 
     def generate_random_location(self):
         """
