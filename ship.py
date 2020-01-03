@@ -1,23 +1,6 @@
 from screen import Screen
 
 
-def move(location, x_speed, y_speed):
-    """
-
-    :param location:
-    :param x_speed:
-    :param y_speed:
-    :return:
-    """
-    x, y = location
-    new_x = Screen.SCREEN_MIN_X + (x + x_speed - Screen.SCREEN_MIN_X) % \
-        (Screen.SCREEN_MAX_X - Screen.SCREEN_MIN_X)
-    new_y = Screen.SCREEN_MIN_Y + (y + y_speed - Screen.SCREEN_MIN_Y) % \
-        (Screen.SCREEN_MAX_Y - Screen.SCREEN_MIN_Y)
-    new_location = (new_x, new_y)
-    return new_location
-
-
 class Ship:
 
     def __init__(self, x_location, x_speed, y_location, y_speed, heading):
@@ -27,9 +10,28 @@ class Ship:
         self.y_speed = y_speed
         self.heading = heading
 
+    def move(self, location, x_speed, y_speed):
+        """
+        this function updates the location of the ship
+        :param location: tuple, (x,y) representing the location of the ship on
+         the axis
+        :param x_speed: int, the ship's speed on the x axis
+        :param y_speed: int, the ship's speed on the y axis
+        """
+        x, y = location
+        new_x = Screen.SCREEN_MIN_X + (x + x_speed - Screen.SCREEN_MIN_X) % \
+                (Screen.SCREEN_MAX_X - Screen.SCREEN_MIN_X)
+        new_y = Screen.SCREEN_MIN_Y + (y + y_speed - Screen.SCREEN_MIN_Y) % \
+                (Screen.SCREEN_MAX_Y - Screen.SCREEN_MIN_Y)
+        self.x_location = new_x
+        self.y_location = new_y
+
     def change_direction(self):
+        """
+        this function changes the heading value of the ship
+        :return:
+        """
         if Screen.is_left_pressed():
             self.heading += 7
         elif Screen.is_right_pressed():
             self.heading -= 7
-
