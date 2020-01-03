@@ -87,6 +87,7 @@ class GameRunner:
     def move_all(self):
         for asteroid in self.asteroids:
             asteroid.move()
+            self.__screen.draw_asteroid(asteroid, asteroid.x_location, asteroid.y_location)
         if self.__screen.is_left_pressed():
             self.ship.change_direction("l")
         elif self.__screen.is_right_pressed():
