@@ -76,7 +76,7 @@ class GameRunner:
             while location[0] == self.ship.x_location and location[1] == self.ship.y_location:
                 location = self.generate_random_location()
             asteroid_speed = self.generate_asteroid_speed()
-            new_asteroid = Asteroid(location[0], asteroid_speed[0], location[0], asteroid_speed[1])
+            new_asteroid = Asteroid(location[0], asteroid_speed[0], location[1], asteroid_speed[1], INIT_ASTEROID_SIZE)
             self.asteroids.append(new_asteroid)
             self.__screen.register_asteroid(new_asteroid, INIT_ASTEROID_SIZE)
 
