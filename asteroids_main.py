@@ -1,5 +1,7 @@
 from screen import Screen
 import sys
+import random
+from ship import Ship
 
 DEFAULT_ASTEROIDS_NUM = 5
 
@@ -27,8 +29,19 @@ class GameRunner:
 
     def _game_loop(self):
         # TODO: Your code goes here
+        self.add_ship()
         pass
 
+    def generate_random_location(self):
+        x_location = random.randint(self.__screen_min_x, self.__screen_max_x)
+        y_location = random.randint(self.__screen_min_y, self._screen_max_y)
+        return x_location, y_location
+
+    def add_ship(self):
+        location = self.generate_random_location()
+        ship = Ship(location[0],0,location[1],0,0)
+        Screen.draw_ship(location[0],location[1],0)
+        return
 
 def main(amount):
     runner = GameRunner(amount)
