@@ -1,5 +1,6 @@
 from screen import Screen
 import math
+from ship import Ship
 
 class Asteroid:
     def __init__(self, x_location, x_speed, y_location, y_speed, size):
@@ -27,9 +28,14 @@ class Asteroid:
     def has_intersection(self, obj):
         distance = math.sqrt((obj.x_location-self.x_location)**2+(obj.y_location-self.y_location)**2)
         if distance <= self.get_radius()+obj.get_radius():
-            True
+            return True
         else:
             return False
 
     def get_radius(self):
         return self.__radius
+
+if __name__ == '__main__':
+    my_asteroid = Asteroid(439,1,73,4,3)
+    my_ship = Ship(439,1,73,4,7)
+    print(my_asteroid.has_intersection(my_ship))
