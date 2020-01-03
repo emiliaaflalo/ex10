@@ -41,7 +41,7 @@ class Ship:
         this function updates the x and y speed of the ship
         :return: nothing
         """
-        new_x = self.x_speed + math.cos(self.heading)
-        new_y = self.y_speed + math.sin(self.heading)
+        new_x = self.x_speed + math.cos(math.radians(self.heading))
+        new_y = self.y_speed + math.sin(math.radians(self.heading))
         self.x_speed = new_x
         self.y_speed = new_y
