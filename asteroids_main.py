@@ -73,7 +73,7 @@ class GameRunner:
         this function adds asteroids to the game asteroid list, and registers
         them on screen
         :param asteroid_num: int, number of asteroids wanted added to the game
-        :return:
+        :return:None
         """
         for i in range(asteroid_num):
             location = self.generate_random_location()
@@ -84,6 +84,11 @@ class GameRunner:
             self.add_asteroid(new_asteroid)
 
     def add_asteroid(self, asteroid):
+        """
+        this function adds an individual asteroid object to the game
+        :param asteroid: an Asteroid type object
+        :return: None
+        """
         self.asteroids.append(asteroid)
         self.__screen.register_asteroid(asteroid, asteroid.size)
 
@@ -151,6 +156,13 @@ class GameRunner:
         self.asteroid_split(asteroid, torpedo)
 
     def asteroid_split(self, asteroid, torpedo):
+        """
+        this method checks whether the size of the asteroid is more than 1,
+         and if it is it will split it into 2 smaller asteroids
+        :param asteroid: an Asteroid object
+        :param torpedo: a torpedo object
+        :return: None
+        """
         if asteroid.size == 1:
             self.asteroids.remove(asteroid)
             self.__screen.unregister_asteroid(asteroid)
@@ -169,6 +181,13 @@ class GameRunner:
         self.torpedoes.remove(torpedo)
 
     def calculate_new_speed(self, asteroid, torpedo):
+        """
+        this function calculates the new speed of the split asteroid according to the speed of
+        it's mother asteroid and the speed of the torpedo that hit it
+        :param asteroid: an Asteroid object
+        :param torpedo: a Torpedo object
+        :return: tuple (new_speed_x, new_speed_y)
+        """
         new_speed_x = (torpedo.x_speed+asteroid.x_speed) / math.sqrt(asteroid.x_speed**2+asteroid.y_speed**2)
         new_speed_y = (torpedo.y_speed + asteroid.y_speed) / math.sqrt(asteroid.x_speed ** 2 + asteroid.y_speed ** 2)
         return new_speed_x, new_speed_y
@@ -202,7 +221,7 @@ class GameRunner:
         """
         this function removes a torpedo object from the game and screen if
         it has been around for 200 rounds (200 calls for the game_loop func)
-        :return:
+        :return: None
         """
         for torpedo in self.torpedoes:
             torpedo.life_time += 1

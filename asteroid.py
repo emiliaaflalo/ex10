@@ -39,6 +39,9 @@ class Asteroid:
             return False
 
     def get_radius(self):
+        """
+        :return: an int value for the object's radius
+        """
         return self.__radius
 
 
