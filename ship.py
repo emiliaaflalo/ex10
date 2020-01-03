@@ -1,5 +1,5 @@
 from screen import Screen
-
+import math
 
 class Ship:
 
@@ -29,9 +29,21 @@ class Ship:
     def change_direction(self):
         """
         this function changes the heading value of the ship
-        :return:
+        :return: nothing
         """
         if Screen.is_left_pressed():
             self.heading += 7
         elif Screen.is_right_pressed():
             self.heading -= 7
+
+    def accelerate(self, x_speed, y_speed):
+        """
+        this function updates the x and y speed of the ship
+        :param x_speed: current x speed
+        :param y_speed: current y speed
+        :return: nothing
+        """
+        new_x = x_speed + math.cos(self.heading)
+        new_y = y_speed + math.sin(self.heading)
+        self.x_speed = new_x
+        self.y_speed = new_y
