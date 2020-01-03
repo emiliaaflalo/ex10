@@ -5,3 +5,4 @@ class Torpedo:
         self.y_location = y_location
         self.y_speed = y_speed
         self.direction = direction
+
