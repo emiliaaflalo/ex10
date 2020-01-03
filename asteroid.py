@@ -1,6 +1,5 @@
 from screen import Screen
 import math
-from ship import Ship
 
 
 class Asteroid:
@@ -43,7 +42,4 @@ class Asteroid:
         return self.__radius
 
 
-if __name__ == '__main__':
-    my_asteroid = Asteroid(439, 1, 73, 4, 3)
-    my_ship = Ship(439, 1, 73, 4, 7)
-    print(my_asteroid.has_intersection(my_ship))
+

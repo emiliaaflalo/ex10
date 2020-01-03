@@ -13,8 +13,6 @@ MAX_ASTEROID_SPEED = 4
 POINTS_BY_ASTEROIDS_SIZE = {1:100, 2:50, 3:20}
 
 
-
-
 class GameRunner:
 
     def __init__(self, asteroids_amount=DEFAULT_ASTEROIDS_NUM):
@@ -25,7 +23,7 @@ class GameRunner:
         self.__screen_min_y = Screen.SCREEN_MIN_Y
         self.ship = self.add_ship()
         self.asteroids = []
-        self.add_asteroids(DEFAULT_ASTEROIDS_NUM)
+        self.add_initial_asteroids(DEFAULT_ASTEROIDS_NUM)
         self.torpedoes = []
         self.score = 0
 
@@ -70,7 +68,7 @@ class GameRunner:
         self.__screen.draw_ship(ship.x_location, ship.y_location, ship.heading)
         return ship
 
-    def add_asteroids(self, asteroid_num):
+    def add_initial_asteroids(self, asteroid_num):
         """
         this function adds asteroids to the game asteroid list, and registers
         them on screen
@@ -83,8 +81,11 @@ class GameRunner:
                 location = self.generate_random_location()
             asteroid_speed = self.generate_asteroid_speed()
             new_asteroid = Asteroid(location[0], asteroid_speed[0], location[1], asteroid_speed[1], INIT_ASTEROID_SIZE)
-            self.asteroids.append(new_asteroid)
-            self.__screen.register_asteroid(new_asteroid, INIT_ASTEROID_SIZE)
+            self.add_asteroid(new_asteroid)
+
+    def add_asteroid(self, asteroid):
+        self.asteroids.append(asteroid)
+        self.__screen.register_asteroid(asteroid, asteroid.size)
 
     def generate_asteroid_speed(self):
         """
@@ -110,11 +111,9 @@ class GameRunner:
             self.__screen.draw_asteroid(asteroid, asteroid.x_location, asteroid.y_location)
             if asteroid.has_intersection(self.ship):
                 self.intersection_with_ship(asteroid)
-                break
             for torpedo in self.torpedoes:
                 if asteroid.has_intersection(torpedo):
-                    self.intersection_with_torpedo(asteroid)
-                    break
+                    self.intersection_with_torpedo(asteroid, torpedo)
         if self.__screen.is_left_pressed():
             self.ship.change_direction("l")
         elif self.__screen.is_right_pressed():
@@ -139,15 +138,40 @@ class GameRunner:
         self.__screen.unregister_asteroid(asteroid)
         self.asteroids.remove(asteroid)
 
-    def intersection_with_torpedo(self, asteroid):
+    def intersection_with_torpedo(self, asteroid, torpedo):
         """
         this function checks if there are torpedoes intersecting with asteroids
         and if so, adds score points.
+        :param torpedo:
         :param asteroid:
         :return:
         """
         self.score += POINTS_BY_ASTEROIDS_SIZE[asteroid.size]
         self.__screen.set_score(self.score)
+        self.asteroid_split(asteroid, torpedo)
+
+    def asteroid_split(self, asteroid, torpedo):
+        if asteroid.size == 1:
+            self.asteroids.remove(asteroid)
+            self.__screen.unregister_asteroid(asteroid)
+        else:
+            new_speed = self.calculate_new_speed(asteroid,  torpedo)
+            x_speed = new_speed[0]
+            y_speed = new_speed[1]
+            if asteroid.size == 2 or asteroid.size == 3:
+                asteroid_1 = Asteroid(asteroid.x_location, x_speed, asteroid.y_location, -y_speed, asteroid.size-1)
+                asteroid_2 = Asteroid(asteroid.x_location, -x_speed, asteroid.y_location, y_speed, asteroid.size-1)
+                self.add_asteroid(asteroid_1)
+                self.add_asteroid(asteroid_2)
+                self.__screen.unregister_asteroid(asteroid)
+                self.asteroids.remove(asteroid)
+        self.__screen.unregister_torpedo(torpedo)
+        self.torpedoes.remove(torpedo)
+
+    def calculate_new_speed(self, asteroid, torpedo):
+        new_speed_x = (torpedo.x_speed+asteroid.x_speed) / math.sqrt(asteroid.x_speed**2+asteroid.y_speed**2)
+        new_speed_y = (torpedo.y_speed + asteroid.y_speed) / math.sqrt(asteroid.x_speed ** 2 + asteroid.y_speed ** 2)
+        return new_speed_x, new_speed_y
 
     def add_torpedo(self):
         """
@@ -185,11 +209,6 @@ class GameRunner:
             if torpedo.life_time >= 200:
                 self.__screen.unregister_torpedo(torpedo)
                 self.torpedoes.remove(torpedo)
-
-
-
-
-
 
 
 def main(amount):
