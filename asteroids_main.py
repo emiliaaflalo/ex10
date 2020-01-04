@@ -119,7 +119,7 @@ class GameRunner:
         """
         this function moves all the objects in the game and updates their
         status on screen
-        :return:
+        :return: None
         """
         for asteroid in self.asteroids:
             asteroid.move()
@@ -147,7 +147,7 @@ class GameRunner:
         this function checks if the ship is intersecting with an asteroid, and
         if so, the ship loses one life point, and a message pops up.
         :param asteroid:
-        :return:
+        :return:None
         """
         self.__screen.show_message("Message", "You lost a life!")
         self.__screen.remove_life()
