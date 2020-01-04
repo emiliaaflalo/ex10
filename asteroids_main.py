@@ -109,7 +109,7 @@ class GameRunner:
         """
         this function moves all the objects in the game and updates their
         status on screen
-        :return:
+        :return: None
         """
         for asteroid in self.asteroids:
             asteroid.move()
