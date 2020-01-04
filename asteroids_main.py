@@ -149,7 +149,8 @@ class GameRunner:
         :param asteroid:
         :return:None
         """
-        self.__screen.show_message("Message", "You lost a life!")
+        if self.ship.life > 1:
+            self.__screen.show_message("Message", "You lost a life!")
         self.__screen.remove_life()
         self.ship.life -= 1
         self.__screen.unregister_asteroid(asteroid)
