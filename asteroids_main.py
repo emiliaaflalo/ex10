@@ -10,7 +10,10 @@ DEFAULT_ASTEROIDS_NUM = 5
 INIT_ASTEROID_SIZE = 3
 MIN_ASTEROID_SPEED = -4
 MAX_ASTEROID_SPEED = 4
-POINTS_BY_ASTEROIDS_SIZE = {1:100, 2:50, 3:20}
+POINTS_BY_ASTEROIDS_SIZE = {1: 100, 2: 50, 3: 20}
+WINNING_MSG = "All asteroids have been eliminated! Good job, Hero."
+LOSING_MSG = "You have been terminated, Bad luck :("
+QUITTING_MSG = "That's it? Well ok... Bye!"
 
 
 class GameRunner:
@@ -27,7 +30,6 @@ class GameRunner:
         self.torpedoes = []
         self.score = 0
 
-
     def run(self):
         self._do_loop()
         self.__screen.start_screen()
@@ -41,11 +43,12 @@ class GameRunner:
 
     def _game_loop(self):
         # TODO: Your code goes here
-        self.__screen.draw_ship(self.ship.x_location, self.ship.y_location, self.ship.heading)
+        self.__screen.draw_ship(self.ship.x_location, self.ship.y_location,
+                                self.ship.heading)
         self.shoot_torpedo()
         self.torpedo_life()
         self.move_all()
-
+        self.if_game_over()
 
     def generate_random_location(self):
         """
@@ -77,10 +80,13 @@ class GameRunner:
         """
         for i in range(asteroid_num):
             location = self.generate_random_location()
-            while location[0] == self.ship.x_location and location[1] == self.ship.y_location:
+            while location[0] == self.ship.x_location and location[
+                1] == self.ship.y_location:
                 location = self.generate_random_location()
             asteroid_speed = self.generate_asteroid_speed()
-            new_asteroid = Asteroid(location[0], asteroid_speed[0], location[1], asteroid_speed[1], INIT_ASTEROID_SIZE)
+            new_asteroid = Asteroid(location[0], asteroid_speed[0],
+                                    location[1], asteroid_speed[1],
+                                    INIT_ASTEROID_SIZE)
             self.add_asteroid(new_asteroid)
 
     def add_asteroid(self, asteroid):
@@ -97,12 +103,16 @@ class GameRunner:
         this function generates random x and y speed for asteroid speed use
         :return:int, x speed and y speed
         """
-        asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+        asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED,
+                                          MAX_ASTEROID_SPEED)
         while asteroid_speed_x == 0:
-            asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
-        asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+            asteroid_speed_x = random.randint(MIN_ASTEROID_SPEED,
+                                              MAX_ASTEROID_SPEED)
+        asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED,
+                                          MAX_ASTEROID_SPEED)
         while asteroid_speed_y == 0:
-            asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED, MAX_ASTEROID_SPEED)
+            asteroid_speed_y = random.randint(MIN_ASTEROID_SPEED,
+                                              MAX_ASTEROID_SPEED)
         return asteroid_speed_x, asteroid_speed_y
 
     def move_all(self):
@@ -113,7 +123,8 @@ class GameRunner:
         """
         for asteroid in self.asteroids:
             asteroid.move()
-            self.__screen.draw_asteroid(asteroid, asteroid.x_location, asteroid.y_location)
+            self.__screen.draw_asteroid(asteroid, asteroid.x_location,
+                                        asteroid.y_location)
             if asteroid.has_intersection(self.ship):
                 self.intersection_with_ship(asteroid)
             for torpedo in self.torpedoes:
@@ -128,7 +139,8 @@ class GameRunner:
         self.ship.move()
         for torpedo in self.torpedoes:
             torpedo.move()
-            self.__screen.draw_torpedo(torpedo, torpedo.x_location, torpedo.y_location, torpedo.heading)
+            self.__screen.draw_torpedo(torpedo, torpedo.x_location,
+                                       torpedo.y_location, torpedo.heading)
 
     def intersection_with_ship(self, asteroid):
         """
@@ -167,12 +179,16 @@ class GameRunner:
             self.asteroids.remove(asteroid)
             self.__screen.unregister_asteroid(asteroid)
         else:
-            new_speed = self.calculate_new_speed(asteroid,  torpedo)
+            new_speed = self.calculate_new_speed(asteroid, torpedo)
             x_speed = new_speed[0]
             y_speed = new_speed[1]
             if asteroid.size == 2 or asteroid.size == 3:
-                asteroid_1 = Asteroid(asteroid.x_location, x_speed, asteroid.y_location, -y_speed, asteroid.size-1)
-                asteroid_2 = Asteroid(asteroid.x_location, -x_speed, asteroid.y_location, y_speed, asteroid.size-1)
+                asteroid_1 = Asteroid(asteroid.x_location, x_speed,
+                                      asteroid.y_location, -y_speed,
+                                      asteroid.size - 1)
+                asteroid_2 = Asteroid(asteroid.x_location, -x_speed,
+                                      asteroid.y_location, y_speed,
+                                      asteroid.size - 1)
                 self.add_asteroid(asteroid_1)
                 self.add_asteroid(asteroid_2)
                 self.__screen.unregister_asteroid(asteroid)
@@ -188,8 +204,10 @@ class GameRunner:
         :param torpedo: a Torpedo object
         :return: tuple (new_speed_x, new_speed_y)
         """
-        new_speed_x = (torpedo.x_speed+asteroid.x_speed) / math.sqrt(asteroid.x_speed**2+asteroid.y_speed**2)
-        new_speed_y = (torpedo.y_speed + asteroid.y_speed) / math.sqrt(asteroid.x_speed ** 2 + asteroid.y_speed ** 2)
+        new_speed_x = (torpedo.x_speed + asteroid.x_speed) / math.sqrt(
+            asteroid.x_speed ** 2 + asteroid.y_speed ** 2)
+        new_speed_y = (torpedo.y_speed + asteroid.y_speed) / math.sqrt(
+            asteroid.x_speed ** 2 + asteroid.y_speed ** 2)
         return new_speed_x, new_speed_y
 
     def add_torpedo(self):
@@ -198,12 +216,15 @@ class GameRunner:
         on the ship current location, speed and heading.
         :return: torpedo type object
         """
-        x_speed = self.ship.x_speed + 2*math.cos(math.radians(self.ship.heading))
-        y_speed = self.ship.y_speed + 2*math.sin(math.radians(self.ship.heading))
+        x_speed = self.ship.x_speed + 2 * math.cos(
+            math.radians(self.ship.heading))
+        y_speed = self.ship.y_speed + 2 * math.sin(
+            math.radians(self.ship.heading))
         x_location = self.ship.x_location
         y_location = self.ship.y_location
         heading = self.ship.heading
-        new_torpedo = Torpedo(x_location, x_speed, y_location, y_speed, heading)
+        new_torpedo = Torpedo(x_location, x_speed, y_location, y_speed,
+                              heading)
         return new_torpedo
 
     def shoot_torpedo(self):
@@ -228,6 +249,20 @@ class GameRunner:
             if torpedo.life_time >= 200:
                 self.__screen.unregister_torpedo(torpedo)
                 self.torpedoes.remove(torpedo)
+
+    def if_game_over(self):
+        if not self.asteroids:
+            self.__screen.show_message("You Won!", WINNING_MSG)
+            self.__screen.end_game()
+            sys.exit()
+        elif self.ship.life == 0:
+            self.__screen.show_message("You Lost!", LOSING_MSG)
+            self.__screen.end_game()
+            sys.exit()
+        elif self.__screen  .should_end():
+            self.__screen.show_message("Quit", QUITTING_MSG)
+            self.__screen.end_game()
+            sys.exit()
 
 
 def main(amount):
