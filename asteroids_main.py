@@ -46,7 +46,7 @@ class GameRunner:
         self.__screen.draw_ship(self.ship.x_location, self.ship.y_location,
                                 self.ship.heading)
         self.shoot_torpedo()
-        self.torpedo_life()
+        self.torpedo_time()
         self.move_all()
         self.if_game_over()
 
@@ -238,7 +238,7 @@ class GameRunner:
             self.torpedoes.append(new_torpedo)
             self.__screen.register_torpedo(new_torpedo)
 
-    def torpedo_life(self):
+    def torpedo_time(self):
         """
         this function removes a torpedo object from the game and screen if
         it has been around for 200 rounds (200 calls for the game_loop func)
@@ -251,15 +251,20 @@ class GameRunner:
                 self.torpedoes.remove(torpedo)
 
     def if_game_over(self):
-        if not self.asteroids:
+        """
+        this function checks if one of the conditions for ending the game is
+        met, and if so, ends the game
+        :return:
+        """
+        if not self.asteroids and self.ship.life > 0:  # if there's no asteroids left
             self.__screen.show_message("You Won!", WINNING_MSG)
             self.__screen.end_game()
             sys.exit()
-        elif self.ship.life == 0:
-            self.__screen.show_message("You Lost!", LOSING_MSG)
+        elif self.ship.life == 0:  # the ships has no more lives
+            self.__screen.show_message("You Died!", LOSING_MSG)
             self.__screen.end_game()
             sys.exit()
-        elif self.__screen  .should_end():
+        elif self.__screen.should_end():  # the player pressed "q"
             self.__screen.show_message("Quit", QUITTING_MSG)
             self.__screen.end_game()
             sys.exit()
