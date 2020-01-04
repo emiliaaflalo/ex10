@@ -3,6 +3,44 @@ import math
 
 
 class Ship:
+    """
+                A class used to represent a ship
+
+                ...
+
+                Attributes
+                ----------
+                self.x_location : int
+                    the x part of coordinates that represent the location of the ship
+                self.x_speed : int
+                    the x component of the speed of the ship
+                self.y_location : int
+                    the y part of coordinates that represent the location of the ship
+                self.y_speed : int
+                    the y component of the speed of the ship
+                self.heading : int
+                    the direction of the ship's prow in degrees
+                self.life  : int
+                    the number of lives the ship has in the game
+                self.__radius : int
+                    the radius of the ship
+
+                Methods
+                -------
+                move():
+                    this function updates the location of the ship according to the
+                    current location and speed
+                change_direction(direction):
+                    changes the heading of the ship according to the direction provided
+                    :param direction: str, "l" or "r"
+                    :return:
+                accelerate():
+                    this function updates the x and y speed of the ship
+                    :return: nothing
+                get_radius():
+                    :return: the radius of the ship (int)
+                """
+
     def __init__(self, x_location, x_speed, y_location, y_speed, heading):
         self.x_location = x_location
         self.x_speed = x_speed

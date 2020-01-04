@@ -20,7 +20,7 @@ class Asteroid:
                 the y component of the speed of the Asteroid
             self.size : int
                 the size of the asteroid
-            self.__radius = self.size * 10 - 5
+            self.__radius : int
                 the radius of the asteroid calculated according to the size of the asteroid
 
             Methods
