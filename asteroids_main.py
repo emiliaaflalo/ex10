@@ -26,7 +26,7 @@ class GameRunner:
         self.__screen_min_y = Screen.SCREEN_MIN_Y
         self.ship = self.add_ship()
         self.asteroids = []
-        self.add_initial_asteroids(DEFAULT_ASTEROIDS_NUM)
+        self.add_initial_asteroids(asteroids_amount)
         self.torpedoes = []
         self.score = 0
 
@@ -127,9 +127,10 @@ class GameRunner:
                                         asteroid.y_location)
             if asteroid.has_intersection(self.ship):
                 self.intersection_with_ship(asteroid)
-            for torpedo in self.torpedoes:
-                if asteroid.has_intersection(torpedo):
-                    self.intersection_with_torpedo(asteroid, torpedo)
+            else:
+                for torpedo in self.torpedoes:
+                    if asteroid.has_intersection(torpedo):
+                        self.intersection_with_torpedo(asteroid, torpedo)
         if self.__screen.is_left_pressed():
             self.ship.change_direction("l")
         elif self.__screen.is_right_pressed():
