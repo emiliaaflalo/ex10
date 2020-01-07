@@ -153,8 +153,9 @@ class GameRunner:
             self.__screen.show_message("Message", "You lost a life!")
         self.__screen.remove_life()
         self.ship.life -= 1
-        self.__screen.unregister_asteroid(asteroid)
-        self.asteroids.remove(asteroid)
+        if asteroid in self.asteroids:
+            self.__screen.unregister_asteroid(asteroid)
+            self.asteroids.remove(asteroid)
 
     def intersection_with_torpedo(self, asteroid, torpedo):
         """
@@ -176,7 +177,7 @@ class GameRunner:
         :param torpedo: a torpedo object
         :return: None
         """
-        if asteroid.size == 1:
+        if asteroid.size == 1 and asteroid in self.asteroids:
             self.asteroids.remove(asteroid)
             self.__screen.unregister_asteroid(asteroid)
         else:
